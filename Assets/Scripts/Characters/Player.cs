@@ -9,8 +9,9 @@ public class Player : BaseCharacter
 
     public event Action OnDeathEvent;
 
-    protected void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         SetStats();
     }
 
@@ -21,6 +22,13 @@ public class Player : BaseCharacter
         _currentHealth = _stats.DefaultHealth;
         _currentDamage = _stats.DefaultDamage;
         _currentAttackSpeed = _stats.DefaultAttackSpeed;
+    }
+
+    protected override IEnumerator ChangeColor(Color color)
+    {
+        SpriteRenderer.color = color;
+        yield return new WaitForSeconds(0.2f);
+        SpriteRenderer.color = DefaultColor;
     }
 
     protected override void Death()

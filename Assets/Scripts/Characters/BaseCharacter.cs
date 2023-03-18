@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public abstract class BaseCharacter : MonoBehaviour, IHealable, IDamagable
@@ -46,6 +47,13 @@ public abstract class BaseCharacter : MonoBehaviour, IHealable, IDamagable
 
     #endregion
 
+    #region Components
+
+    protected SpriteRenderer SpriteRenderer;
+    public Color DefaultColor { get; private set; }
+
+    #endregion
+
     #region Events
 
     public event Action<float> OnCurrentHealthValueChangedEvent; 
@@ -67,13 +75,36 @@ public abstract class BaseCharacter : MonoBehaviour, IHealable, IDamagable
     public void TakeDamage(float damage)
     {
         _currentHealth -= damage;
+
+        StartCoroutine(ChangeColor(Color.red));
+
         if (_currentHealth <= 0)
             Death();
-        Debug.Log($"{name} - {_currentHealth}");
+
+        
+
         OnCurrentHealthValueChangedEvent?.Invoke(_currentHealth);
     }
 
+    protected virtual IEnumerator ChangeColor(Color color)
+    {
+        var _currentColor = SpriteRenderer.color;
+        SpriteRenderer.color = color;
+        yield return new WaitForSeconds(0.2f);
+        SpriteRenderer.color = _currentColor;
+    }
+
     protected abstract void Death();
+
+    #endregion
+
+    #region Behaviours
+
+    protected virtual void Awake()
+    {
+        SpriteRenderer = GetComponent<SpriteRenderer>();
+        DefaultColor = SpriteRenderer.color;
+    }
 
     #endregion
 }

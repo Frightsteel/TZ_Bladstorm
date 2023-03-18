@@ -16,8 +16,10 @@ public abstract class BaseEnemy : BaseCharacter, IPoolable
     protected List<BaseEnemy> Enemies;
     protected Cooldown AutoAttackCooldown;
 
-    protected void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         Rigidbody = GetComponent<Rigidbody2D>();
         Collider = GetComponent<Collider2D>();
 
@@ -45,7 +47,7 @@ public abstract class BaseEnemy : BaseCharacter, IPoolable
     {
         SetStats();
         IsUnderControl = false;
-        GetComponent<SpriteRenderer>().color = Color.red;//temp
+        SpriteRenderer.color = DefaultColor;
         //smth else if need (sprite, color and etc)
     }
 

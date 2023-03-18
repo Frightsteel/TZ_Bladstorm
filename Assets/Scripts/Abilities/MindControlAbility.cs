@@ -78,7 +78,7 @@ public class MindControlAbility : ActiveAbility
             {
                 enemy.SetTarget(_character.transform);
             }
-            _target.GetComponent<SpriteRenderer>().color = Color.red;//temp
+            _target.GetComponent<SpriteRenderer>().color = _target.DefaultColor;//temp
         }
     }
 }
